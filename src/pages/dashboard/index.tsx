@@ -1,8 +1,13 @@
+import { Header } from '../../components/Header';
+import { Container } from './styles'
 
 export default function Dashboard() {
-    return(
+    return (
         <>
-            <h1>Dashboard</h1>
+            <Header />
+            <Container>
+                <p>Content</p>
+            </Container>
         </>
     );
 }
