@@ -35,6 +35,7 @@ export const ButtonGerenciamento = styled.button`
   transition: filter 0.2s;
   &:hover {
     filter: brightness(0.93);
+    cursor: pointer;
   }
 `;
 
