@@ -1,5 +1,6 @@
 import { FirebaseAuthProvider } from "@react-firebase/auth";
 import firebase from "firebase";
+import "firebase/firestore"
 import React from "react";
 import { GlobalStyle } from "../../styles/global";
 
