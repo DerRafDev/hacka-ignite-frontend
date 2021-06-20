@@ -7,7 +7,7 @@ import {
     Form,
     DivRegister
   } from './styles';
-import Router from 'next/router';
+import Router, {useRouter} from 'next/router';
 
 type LoginProps = {
     email: string;
@@ -21,6 +21,8 @@ type LoginProps = {
     emailError: string;
     passwordError: string;
 }
+import firebase from "firebase/app";
+import "firebase/auth";
 
 export default function Login({ 
     email, 
@@ -34,6 +36,7 @@ export default function Login({
     emailError,
     passwordError
 }: LoginProps) {
+    const router = useRouter()
     return(
         <RetangleBlue>
         <RetangleWhite>
@@ -62,8 +65,12 @@ export default function Login({
             </InputSpace>
 
             <Button
-                type="submit"
-                onClick={handleLogin && (() => Router.push('/dashboard'))}
+                type="button"
+                onClick={ async () => {
+                  const user = await firebase.auth().signInWithEmailAndPassword(email, password)
+
+                  router.push('/dashboard')
+                }}
             >
                 Entrar
             </Button>
