@@ -8,7 +8,7 @@ import {
     Form,
     DivUper,
     
-} from './styles'
+} from '../../../styles/register'
 
 import { useState } from 'react';
 

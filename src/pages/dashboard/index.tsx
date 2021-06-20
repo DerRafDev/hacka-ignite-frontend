@@ -10,7 +10,7 @@ import {
     ButtonCheckAndClose,
     ButtonWhatsApp,
     ViewSearch
-} from './styles'
+} from '../../../styles/dashboard'
 
 import Wpp from "../../../public/Whatsapp.svg";
 import { Button } from '../../components/Login/styles';
