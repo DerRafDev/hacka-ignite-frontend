@@ -1,6 +1,6 @@
 import { FirebaseAuthConsumer } from '@react-firebase/auth';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Header } from '../../components/Header';
 import Image from "next/image";
 import {
@@ -14,9 +14,43 @@ import {
 
 import Wpp from "../../../public/Whatsapp.svg";
 import { Button } from '../../components/Login/styles';
+import firebase from 'firebase';
+import "firebase/firestore"
 
 export default function Dashboard() {
     const router = useRouter()
+    const [notices, setNotices] = useState([])
+    const [firstLoad, setFirstLoad] = useState(true)
+    const [condominiumId, setCondominiumId] = useState('')
+
+    const mapperNotices = doc => {
+      return {
+        id: doc.id,
+        ...doc.data()
+      }
+    }
+
+    useEffect(() => {
+      // implementar request para pegar o condomínio ai
+      (async() => {
+        setInterval(() => { setCondominiumId('Yw6HIxBX2xf93Idxzc4F') }, 3000)
+      })()
+    }, [])
+
+    if(condominiumId){
+      firebase.firestore().collection(`condominiuns`).doc(condominiumId).collection('notices').orderBy('date', 'desc').limit(10).onSnapshot((docs) => {
+        const datas = docs.docs.map(mapperNotices)
+        if(firstLoad){
+          setNotices(datas)
+          setFirstLoad(false)
+        } else if( datas[0].id !== notices[0]?.id ){
+          const newNotions = [datas[0], ...notices]
+          setNotices(newNotions)
+        }
+      })
+    }
+
+
     return (
       <FirebaseAuthConsumer>
           {({isSignedIn, user, providerId}) => {
@@ -40,21 +74,20 @@ export default function Dashboard() {
               <>
                <Header />
             <Container>
-                <ViewCardsWarnings>
-                    <h1>Avisos</h1>
-                    <Card>
+              <ViewCardsWarnings>
+                <h1>Avisos</h1>
+                {notices.map(notice => {
+                  
+                  return(
+                    <Card key={notice.id}>
                         <div className="top">
-                            <h4>Jorge Luiz</h4>
-                            <h5><span>Tag</span> Visita</h5>
+                            <h4>{notice.name}</h4>
+                            <h5><span>Tag</span>{notice.tag}</h5>
                         </div>
 
-                        <p>Meu filho Jorge Neto está proibido de receber visitas pois
-                            está de castigo, impedir a liberação da
-                            entrada de amigos dele.</p>
+                        <p>{notice.body}</p>
                         <div className="BottomContact">
-                            <span>Bloco/AP</span>
-                            <h3>10 / 120</h3>
-
+                            <span>{notice.apartment}</span>
                             <ButtonCheckAndClose>Anotar</ButtonCheckAndClose>
                             <ButtonWhatsApp>
                                 <Image src={Wpp} alt="Whatsapp" />
@@ -62,44 +95,8 @@ export default function Dashboard() {
                             </ButtonWhatsApp>
                         </div>
                     </Card>
-                    <Card>
-                        <div className="top">
-                            <h4>Rafael Sordi</h4>
-                            <h5><span>Tag</span>Delivery</h5>
-                        </div>
-
-                        <p>Pedi um Ifood, o nome do motorista é Carlos e está em uma moto de placa AAA-9999, favor liberar e me avisar quando ele estiver entrando.
-                        </p>
-                        <div className="BottomContact">
-                            <span>Bloco/AP</span>
-                            <h3>10 / 120</h3>
-
-                            <ButtonCheckAndClose>Anotar</ButtonCheckAndClose>
-                            <ButtonWhatsApp>
-                                <Image src={Wpp} alt="Whatsapp" />
-                                Entrar em contato
-                            </ButtonWhatsApp>
-                        </div>
-                    </Card>
-                    <Card>
-                        <div className="top">
-                            <h4>Rafael Sordi</h4>
-                            <h5><span>Tag</span>Delivery</h5>
-                        </div>
-
-                        <p>Pedi um Ifood, o nome do motorista é Carlos e está em uma moto de placa AAA-9999, favor liberar e me avisar quando ele estiver entrando.
-                        </p>
-                        <div className="BottomContact">
-                            <span>Bloco/AP</span>
-                            <h3>10 / 120</h3>
-
-                            <ButtonCheckAndClose>Anotar</ButtonCheckAndClose>
-                            <ButtonWhatsApp>
-                                <Image src={Wpp} alt="Whatsapp" />
-                                Entrar em contato
-                            </ButtonWhatsApp>
-                        </div>
-                    </Card>
+                  )
+                })}
                 </ViewCardsWarnings>
                 <ViewSearch>
                     <label>Bloco</label>
