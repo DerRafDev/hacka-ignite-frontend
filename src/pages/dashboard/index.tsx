@@ -1,3 +1,6 @@
+import { FirebaseAuthConsumer } from '@react-firebase/auth';
+import { useRouter } from 'next/router';
+import React from 'react';
 import { Header } from '../../components/Header';
 import Image from "next/image";
 import {
@@ -10,11 +13,32 @@ import {
 } from './styles'
 
 import Wpp from "../../../public/Whatsapp.svg";
+import { Button } from '../../components/Login/styles';
 
 export default function Dashboard() {
+    const router = useRouter()
     return (
-        <>
-            <Header />
+      <FirebaseAuthConsumer>
+          {({isSignedIn, user, providerId}) => {
+            if(!isSignedIn){
+             return (
+              <>
+                <h1>Para continuar é preciso fazer login!</h1>
+                <Button
+                    type="button"
+                    onClick={ async () => {
+                      router.push('/')
+                    }}
+                >
+                    Voltar
+                </Button>
+              </>
+             )
+            }
+
+            return (
+              <>
+               <Header />
             <Container>
                 <ViewCardsWarnings>
                     <h1>Avisos</h1>
@@ -27,6 +51,25 @@ export default function Dashboard() {
                         <p>Meu filho Jorge Neto está proibido de receber visitas pois
                             está de castigo, impedir a liberação da
                             entrada de amigos dele.</p>
+                        <div className="BottomContact">
+                            <span>Bloco/AP</span>
+                            <h3>10 / 120</h3>
+
+                            <ButtonCheckAndClose>Anotar</ButtonCheckAndClose>
+                            <ButtonWhatsApp>
+                                <Image src={Wpp} alt="Whatsapp" />
+                                Entrar em contato
+                            </ButtonWhatsApp>
+                        </div>
+                    </Card>
+                    <Card>
+                        <div className="top">
+                            <h4>Rafael Sordi</h4>
+                            <h5><span>Tag</span>Delivery</h5>
+                        </div>
+
+                        <p>Pedi um Ifood, o nome do motorista é Carlos e está em uma moto de placa AAA-9999, favor liberar e me avisar quando ele estiver entrando.
+                        </p>
                         <div className="BottomContact">
                             <span>Bloco/AP</span>
                             <h3>10 / 120</h3>
@@ -76,6 +119,9 @@ export default function Dashboard() {
                     <button className="btn btnAvisar">Avisar</button>
                 </ViewSearch>
             </Container>
-        </>
+              </>
+            )
+          }}
+      </FirebaseAuthConsumer>
     );
 }
