@@ -1,6 +1,6 @@
 import {
   Container,
-} from './styles'
+} from '../../styles/styles'
 
 import { useState, useEffect } from 'react';
 import fire from '../services/fire';
