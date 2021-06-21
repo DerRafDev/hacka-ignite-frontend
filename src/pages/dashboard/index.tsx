@@ -33,12 +33,12 @@ export default function Dashboard() {
     useEffect(() => {
       // implementar request para pegar o condomínio ai
       (async() => {
-        setInterval(() => { setCondominiumId('Yw6HIxBX2xf93Idxzc4F') }, 3000)
+        setInterval(() => { setCondominiumId('a1b2f69d-ee4e-4bc9-8d53-7697410c0e32') }, 30)
       })()
     }, [])
 
     if(condominiumId){
-      firebase.firestore().collection(`condominiuns`).doc(condominiumId).collection('notices').orderBy('date', 'desc').limit(10).onSnapshot((docs) => {
+      firebase.firestore().collection(`Condominiums`).doc(condominiumId).collection('Notices').orderBy('timestamp', 'desc').limit(10).onSnapshot((docs) => {
         const datas = docs.docs.map(mapperNotices)
         if(firstLoad){
           setNotices(datas)
