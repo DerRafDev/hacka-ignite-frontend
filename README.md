@@ -36,6 +36,9 @@
 <p align="left">Aplicação desenvolvida durante Hackathon Code/Station 2021, Alfred foi feito com o intuito de melhorar a qualidade de vida de condôminos e também das portarias dos respectivos condomínios, de modo que, o condômino possa mandar uma simples mensagem de WhatsApp para avisar algo para a portaria ou vice versa, como por exemplo, avisar antecipadamente que fez um Delivery de modo que facilite a entrada do entregador e seja mais rápido a entrega. </p>
 
 <!-- TECHNOLOGIES -->
+# Deploy
+
+Foi utilizado o Vercel para o deploy dessa aplicação, estando no seguinte site: https://alfred-kohl.vercel.app/
 
 # Tecnologias
 
